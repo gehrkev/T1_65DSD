@@ -5,12 +5,21 @@ import br.udesc.model.Pessoa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Persistence {
+public class PessoaPersistence {
+
+    private static PessoaPersistence instance;
 
     private List<Pessoa> pessoaList;
 
-    public Persistence() {
+    private PessoaPersistence() {
         pessoaList = new ArrayList();
+    }
+
+    public static synchronized PessoaPersistence getInstance() {
+        if (instance == null) {
+            instance = new PessoaPersistence();
+        }
+        return instance;
     }
 
     public void insert(Pessoa pessoa) {
@@ -48,6 +57,21 @@ public class Persistence {
         return "Pessoa não encontrada";
     }
 
+    public Pessoa getObject(String cpf) {
+        if (pessoaList.isEmpty()) return new Pessoa(); // Por isso aqui temos que fazer uma validação na hora de
+                                                        // de inserir pessoas ou responsavel nos projetos
+                                                        // TODO definir onde fazer essa validação
+
+        for (Pessoa pessoa : pessoaList) {
+            if (pessoa.getCpf().equals(cpf)) {
+                return pessoa;
+            }
+        }
+        return new Pessoa(); // Por isso aqui temos que fazer uma validação na hora de
+                             // de inserir pessoas ou responsavel nos projetos
+                             // TODO definir onde fazer essa validação
+    }
+
     public String delete(String cpf) {
         if (pessoaList.isEmpty()) return "Sem pessoas cadastradas";
 
@@ -63,6 +87,10 @@ public class Persistence {
 
     public String list() {
         return this.toString();
+    }
+
+    protected List<Pessoa> getPessoaList() {
+        return pessoaList;
     }
 
     @Override

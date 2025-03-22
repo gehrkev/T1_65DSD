@@ -6,6 +6,12 @@ public class Pessoa {
     private String nome;
     private String endereco;
 
+    public Pessoa(){
+        this.cpf = "-1";
+        this.nome = "";
+        this.endereco = "";
+    }
+
     public Pessoa(String cpf, String nome, String endereco) {
         this.cpf = cpf;
         this.nome = nome;
