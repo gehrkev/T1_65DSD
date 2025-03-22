@@ -192,3 +192,5 @@ Temporary Items
 .apdisk
 
 /t1DSDServer/.idea/
+/.idea/
+/*/target

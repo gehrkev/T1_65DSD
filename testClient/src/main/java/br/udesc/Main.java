@@ -1,3 +1,5 @@
+package main.java.br.udesc;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String IP = "127.0.0.1";
+        String IP = "45.182.163.205";
         int PORT = 1234;
         Scanner scanner = new Scanner(System.in);
 
