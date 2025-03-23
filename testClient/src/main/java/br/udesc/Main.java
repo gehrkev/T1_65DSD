@@ -1,4 +1,4 @@
-package main.java.br.udesc;
+package br.udesc;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,10 +9,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String IP = "45.182.163.205";
+        String IP = new String();
         int PORT = 1234;
         Scanner scanner = new Scanner(System.in);
-
+        System.out.print("Digite o IP do servidor: ");
+        IP = scanner.nextLine();
         System.out.println("Cliente iniciado");
 
         while (true) {
