@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String IP = "45.182.163.205";
+        String IP = "127.0.0.1";
         int PORT = 1234;
         Scanner scanner = new Scanner(System.in);
 
