@@ -194,3 +194,7 @@ Temporary Items
 /t1DSDServer/.idea/
 /.idea/
 /*/target
+/testClient/.idea/compiler.xml
+/testClient/.idea/encodings.xml
+/testClient/.idea/jarRepositories.xml
+/testClient/.idea/misc.xml

@@ -14,12 +14,14 @@ public class ServerController {
     private final int PORT = 1234;
     private CadastroPessoaController cadastroPessoaController;
     private CadastroProjetoPesquisaController cadastroProjetoPesquisaController;
+    private CadastroProfessorController cadastroProfessorController;
     private ServerSocket server;
 
 
     private ServerController() throws IOException {
         this.cadastroPessoaController = CadastroPessoaController.getInstance();
         this.cadastroProjetoPesquisaController = CadastroProjetoPesquisaController.getInstance();
+        this.cadastroProfessorController = new CadastroProfessorController().getInstance();
         openServer();
     }
 
@@ -52,6 +54,7 @@ public class ServerController {
             String retorno = new String("");
             switch (cmd) {
                 case "PESSOA": retorno = pessoaMenu(msg); break; // sem retorno;
+                case "PROFESSOR": retorno = pessoaMenu(msg); break; // sem retorno;
                 case "PROJETO": retorno = projetoMenu(msg); break;
                 default: retorno = "Comando inválido!"; break;
             }
@@ -69,11 +72,27 @@ public class ServerController {
         String cmd = msg[1];
         String msgString = String.join(";", msg);
         switch (cmd) {
-            case "INSERT": cadastroPessoaController.insert(msgString); break; // sem retorno;
+            case "INSERT": cadastroPessoaController.insert(msgString); break;
             case "UPDATE": retorno = cadastroPessoaController.update(msgString); break;
             case "GET": retorno = cadastroPessoaController.get(msgString); break;
             case "DELETE": retorno = cadastroPessoaController.delete(msgString); break;
             case "LIST": retorno = cadastroPessoaController.list(); break;
+            default: retorno = "Comando inválido!"; break;
+        }
+        return retorno;
+    }
+
+    private String professorMenu(String[] msg){
+        if (msg.length == 1) return "Erro: Campos faltantes!";
+        String retorno = new String("");
+        String cmd = msg[1];
+        String msgString = String.join(";", msg);
+        switch (cmd) {
+            case "INSERT": cadastroProfessorController.insert(msgString); break; // sem retorno;
+            case "UPDATE": retorno = cadastroProfessorController.update(msgString); break;
+            case "GET": retorno = cadastroProfessorController.get(msgString); break;
+            case "DELETE": retorno = cadastroProfessorController.delete(msgString); break;
+            case "LIST": retorno = cadastroProfessorController.list(); break;
             default: retorno = "Comando inválido!"; break;
         }
         return retorno;
