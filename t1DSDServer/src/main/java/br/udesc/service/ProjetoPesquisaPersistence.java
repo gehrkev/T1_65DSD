@@ -67,7 +67,7 @@ public class ProjetoPesquisaPersistence {
         return "Projeto não encontrado";
     }
 
-    public Integer getContadorCodigo() {
+    private Integer getContadorCodigo() {
         return contadorCodigo;
     }
 
