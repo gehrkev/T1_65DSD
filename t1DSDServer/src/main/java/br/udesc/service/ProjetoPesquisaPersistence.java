@@ -10,11 +10,11 @@ public class ProjetoPesquisaPersistence {
 
     private static ProjetoPesquisaPersistence instance;
 
-    private List<ProjetoPesquisa> projetosList;
+    private static List<ProjetoPesquisa> projetosList;
     private Integer contadorCodigo;
 
     private ProjetoPesquisaPersistence() {
-        projetosList = new ArrayList();
+        projetosList = new ArrayList<ProjetoPesquisa>();
         contadorCodigo = 0;
     }
 
