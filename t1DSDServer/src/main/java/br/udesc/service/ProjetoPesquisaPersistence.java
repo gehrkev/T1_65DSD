@@ -1,6 +1,8 @@
 package br.udesc.service;
 
+import br.udesc.model.Aluno;
 import br.udesc.model.Pessoa;
+import br.udesc.model.Professor;
 import br.udesc.model.ProjetoPesquisa;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class ProjetoPesquisaPersistence {
     private static ProjetoPesquisaPersistence instance;
 
     private static List<ProjetoPesquisa> projetosList;
-    private Integer contadorCodigo;
+    private static Integer contadorCodigo;
 
     private ProjetoPesquisaPersistence() {
         projetosList = new ArrayList<ProjetoPesquisa>();
@@ -74,10 +76,30 @@ public class ProjetoPesquisaPersistence {
     public void addParticipante(String codigo, String cpf) {
         for (ProjetoPesquisa pj : projetosList) {
             if (pj.getCodigo().equals(Integer.parseInt(codigo))) {
-                PessoaPersistence pessoaPersistence =  PessoaPersistence.getInstance();
-                for(Pessoa ps : pessoaPersistence.getPessoaList()){
-                    if(ps.getCpf().equals(cpf)){
-                        pj.addParticipante(ps);
+                PessoaPersistence<Professor> professorPersistence =
+                        PessoaPersistenceFactory.getPersistence(Professor.class);
+                for (Professor prof : professorPersistence.getPessoaList()) {
+                    if (prof.getCpf().equals(cpf)) {
+                        pj.addParticipante(prof);
+                        return;
+                    }
+                }
+
+                PessoaPersistence<Aluno> alunoPersistence =
+                        PessoaPersistenceFactory.getPersistence(Aluno.class);
+                for (Aluno aluno : alunoPersistence.getPessoaList()) {
+                    if (aluno.getCpf().equals(cpf)) {
+                        pj.addParticipante(aluno);
+                        return;
+                    }
+                }
+
+                PessoaPersistence<Pessoa> pessoaPersistence =
+                        PessoaPersistenceFactory.getPersistence(Pessoa.class);
+                for (Pessoa pessoa : pessoaPersistence.getPessoaList()) {
+                    if (pessoa.getCpf().equals(cpf)) {
+                        pj.addParticipante(pessoa);
+                        return;
                     }
                 }
             }
@@ -87,10 +109,10 @@ public class ProjetoPesquisaPersistence {
     public void removeParticipante(String codigo, String cpf) {
         for (ProjetoPesquisa pj : projetosList) {
             if (pj.getCodigo().equals(Integer.parseInt(codigo))) {
-                PessoaPersistence pessoaPersistence = PessoaPersistence.getInstance();
-                for(Pessoa ps : pessoaPersistence.getPessoaList()){
-                    if(ps.getCpf().equals(cpf) && !ps.equals(pj.getResponsavel())){
-                        pj.removeParticipante(ps);
+                for (Pessoa participante : new ArrayList<>(pj.getParticipantes())) { // Criamos uma cópia de participantes ao invés de percorrer a própria
+                    if (participante.getCpf().equals(cpf) && !participante.equals(pj.getResponsavel())) {
+                        pj.removeParticipante(participante); // Assim podemos remover livremente sem causar ConcurrentModificationException
+                        return;
                     }
                 }
             }

@@ -1,7 +1,13 @@
 package br.udesc.model;
 
 public class Aluno extends Pessoa{
+
     private String matricula;
+
+    public Aluno() {
+        super();
+        this.matricula = "";
+    }
 
     public Aluno(String cpf, String nome, String endereco, String matricula) {
         super(cpf, nome, endereco);

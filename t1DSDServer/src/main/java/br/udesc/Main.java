@@ -1,7 +1,6 @@
 package br.udesc;
 
 import br.udesc.controller.ServerController;
-import br.udesc.controller.CadastroPessoaController;
 
 import java.io.IOException;
 

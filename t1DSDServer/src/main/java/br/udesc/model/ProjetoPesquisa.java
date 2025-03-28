@@ -13,11 +13,10 @@ public class ProjetoPesquisa {
 
     private String descricao;
 
-    private Pessoa responsavel;
+    private Professor responsavel;
 
-    public ProjetoPesquisa(String nomeGrupo/*, Integer codigo*/, String descricao, Pessoa responsavel) {
+    public ProjetoPesquisa(String nomeGrupo, String descricao, Professor responsavel) {
         this.nomeGrupo = nomeGrupo;
-//        this.codigo = codigo;
         this.descricao = descricao;
         this.responsavel = responsavel;
     }
@@ -54,11 +53,11 @@ public class ProjetoPesquisa {
         this.descricao = descricao;
     }
 
-    public Pessoa getResponsavel() {
+    public Professor getResponsavel() {
         return responsavel;
     }
 
-    public void setResponsavel(Pessoa responsavel) {
+    public void setResponsavel(Professor responsavel) {
         this.responsavel = responsavel;
     }
 

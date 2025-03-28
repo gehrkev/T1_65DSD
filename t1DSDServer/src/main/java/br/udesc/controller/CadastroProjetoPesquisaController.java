@@ -1,20 +1,20 @@
 package br.udesc.controller;
 
 import br.udesc.model.Pessoa;
+import br.udesc.model.Professor;
 import br.udesc.model.ProjetoPesquisa;
-import br.udesc.service.PessoaPersistence;
-import br.udesc.service.ProjetoPesquisaPersistence;
+import br.udesc.service.*;
 
 public class CadastroProjetoPesquisaController {
 
     private static CadastroProjetoPesquisaController instance;
 
     private ProjetoPesquisaPersistence projetoPesquisaPersistence;
-    private PessoaPersistence pessoaPersistence;
+    private PessoaPersistence<Professor> professorPersistence;
 
     private CadastroProjetoPesquisaController(){
         projetoPesquisaPersistence = ProjetoPesquisaPersistence.getInstance();
-        pessoaPersistence = PessoaPersistence.getInstance();
+        professorPersistence = PessoaPersistenceFactory.getPersistence(Professor.class);
     }
 
     public static synchronized CadastroProjetoPesquisaController getInstance() {
@@ -32,44 +32,72 @@ public class CadastroProjetoPesquisaController {
         }
         String nomeGrupo = mensagem[2];
         String descricao = mensagem[3];
-        String responsavel = mensagem[4]; // usar pessoaPersistence para recuperar responsavel
-        Pessoa pessoaResponsavel = pessoaPersistence.getObject(responsavel);
-        ProjetoPesquisa projetoPesquisa = new ProjetoPesquisa(nomeGrupo, descricao, pessoaResponsavel);
+        String responsavelCpf = mensagem[4];
+        Professor responsavel = professorPersistence.getObject(responsavelCpf);
+
+        if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty()) {
+            return; // Não encontrou professor válido
+        }
+
+        ProjetoPesquisa projetoPesquisa = new ProjetoPesquisa(nomeGrupo, descricao, responsavel);
         projetoPesquisaPersistence.insert(projetoPesquisa);
     }
 
-    // PROJETO;UPDATE;nome;descricao;responsavel(cpf)
-    public String update(String msg){
+    // PROJETO;UPDATE;codigo;nome;descricao;responsavel(cpf)
+    public String update(String msg) {
         String[] mensagem = split(msg);
-        if (mensagem.length < 5){
+        if (mensagem.length < 6) {
             return "Erro: Campos faltantes!";
         }
-        String nomeGrupo = mensagem[2];
-        String descricao = mensagem[3];
-        String responsavel = mensagem[4];
-        Pessoa pessoaResponsavel = pessoaPersistence.getObject(responsavel);
-        ProjetoPesquisa projetoPesquisa = new ProjetoPesquisa(nomeGrupo, descricao, pessoaResponsavel);
-        return projetoPesquisaPersistence.update(projetoPesquisa);
+
+        try {
+            Integer codigo = Integer.parseInt(mensagem[2]);
+            String nomeGrupo = mensagem[3];
+            String descricao = mensagem[4];
+            String responsavelCpf = mensagem[5];
+
+            // Busca o professor responsável usando a persistência de professores
+            Professor responsavel = professorPersistence.getObject(responsavelCpf);
+
+            // Verifica se encontrou um professor válido
+            if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty()) {
+                return "Professor responsável não encontrado";
+            }
+
+            ProjetoPesquisa projetoPesquisa = new ProjetoPesquisa(nomeGrupo, descricao, responsavel);
+            projetoPesquisa.setCodigo(codigo);
+            return projetoPesquisaPersistence.update(projetoPesquisa);
+        } catch (NumberFormatException e) {
+            return "Código do projeto inválido";
+        }
     }
 
     // PROJETO;GET;codigo
-    public String get(String msg){
+    public String get(String msg) {
         String[] mensagem = split(msg);
-        if (mensagem.length < 3){
+        if (mensagem.length < 3) {
             return "Código do projeto necessário";
         }
-        String codigo = mensagem[2];
-        return projetoPesquisaPersistence.get(Integer.parseInt(codigo));
+        try {
+            String codigo = mensagem[2];
+            return projetoPesquisaPersistence.get(Integer.parseInt(codigo));
+        } catch (NumberFormatException e) {
+            return "Código do projeto inválido";
+        }
     }
 
     // PROJETO;DELETE;codigo
-    public String delete(String msg){
+    public String delete(String msg) {
         String[] mensagem = split(msg);
-        if (mensagem.length < 3){
+        if (mensagem.length < 3) {
             return "Erro: Campos faltantes!";
         }
-        String codigo = mensagem[2];
-        return projetoPesquisaPersistence.delete(Integer.parseInt(codigo));
+        try {
+            String codigo = mensagem[2];
+            return projetoPesquisaPersistence.delete(Integer.parseInt(codigo));
+        } catch (NumberFormatException e) {
+            return "Código do projeto inválido";
+        }
     }
 
     // PROJETO;LIST
@@ -82,27 +110,35 @@ public class CadastroProjetoPesquisaController {
     }
 
     // PROJETO;ADD;codigo;cpf
-    public String addParticipante(String msg){
+    public String addParticipante(String msg) {
         String[] mensagem = split(msg);
-        if (mensagem.length < 4){
+        if (mensagem.length < 4) {
             return "Erro: Campos faltantes!";
         }
-        String codigo = mensagem[2];
-        String cpf = mensagem[3];
-        projetoPesquisaPersistence.addParticipante(codigo, cpf);
-
-        return "";
+        try {
+            String codigo = mensagem[2];
+            String cpf = mensagem[3];
+            projetoPesquisaPersistence.addParticipante(codigo, cpf);
+            return "Participante adicionado com sucesso";
+        } catch (NumberFormatException e) {
+            return "Código do projeto inválido";
+        }
     }
 
+
     // PROJETO;REMOVE;codigo;cpf
-    public String removeParticipante(String msg){
+    public String removeParticipante(String msg) {
         String[] mensagem = split(msg);
-        if (mensagem.length < 4){
+        if (mensagem.length < 4) {
             return "Erro: Campos faltantes!";
         }
-        String codigo = mensagem[2];
-        String cpf = mensagem[3];
-        projetoPesquisaPersistence.removeParticipante(codigo, cpf);
-        return "";
+        try {
+            String codigo = mensagem[2];
+            String cpf = mensagem[3];
+            projetoPesquisaPersistence.removeParticipante(codigo, cpf);
+            return "Participante removido com sucesso";
+        } catch (NumberFormatException e) {
+            return "Código do projeto inválido";
+        }
     }
 }
