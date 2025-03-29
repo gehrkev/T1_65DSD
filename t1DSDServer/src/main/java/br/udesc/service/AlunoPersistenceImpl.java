@@ -1,14 +1,11 @@
 package br.udesc.service;
 
 import br.udesc.model.Aluno;
-import br.udesc.model.Professor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Implementar de acordo com o modelo em ProfessorPersistenceImpl
-// TODO Só os métodos 'stub' foram inseridos, confirmar se não há mais em ProfessorPersistenceImpl
-public class AlunoPersistenceImpl implements PessoaPersistence<Aluno>{
+public class AlunoPersistenceImpl implements PessoaPersistence<Aluno> {
 
     private List<Aluno> alunoList;
 
@@ -17,33 +14,74 @@ public class AlunoPersistenceImpl implements PessoaPersistence<Aluno>{
     }
 
     @Override
-    public void insert(Aluno pessoa) {
-
+    public void insert(Aluno aluno) {
+        for (Aluno a : alunoList) {
+            if (a.getCpf().equals(aluno.getCpf())) {
+                updateFields(a, aluno);
+                return;
+            }
+        }
+        alunoList.add(aluno);
     }
 
     @Override
-    public String update(Aluno pessoa) {
-        return "";
+    public String update(Aluno aluno) {
+        for (Aluno a : alunoList) {
+            if (a.getCpf().equals(aluno.getCpf())) {
+                updateFields(a, aluno);
+                return "Aluno atualizado com sucesso!";
+            }
+        }
+        return "Aluno atualizado com sucesso!";
+    }
+
+    protected void updateFields(Aluno existente, Aluno novo) {
+        existente.setNome(novo.getNome());
+        existente.setEndereco(novo.getEndereco());
+        existente.setMatricula(novo.getMatricula());
     }
 
     @Override
     public String get(String cpf) {
-        return "";
+        if (alunoList.isEmpty()) return "Sem alunos cadastrados!";
+
+        for (Aluno a : alunoList) {
+            if (a.getCpf().equals(cpf)) {
+                return a.toString();
+            }
+        }
+        return "Aluno não encontrado!";
     }
 
     @Override
     public Aluno getObject(String cpf) {
-        return null;
+        if (alunoList.isEmpty()) return new Aluno();
+
+        for (Aluno a : alunoList) {
+            if (a.getCpf().equals(cpf)) {
+                return a;
+            }
+        }
+        return new Aluno();
     }
 
     @Override
     public String delete(String cpf) {
-        return "";
+        if (alunoList.isEmpty()) return "Sem alunos cadastrados!";
+
+        for (Aluno a : alunoList) {
+            if (a.getCpf().equals(cpf)) {
+                alunoList.remove(a);
+                return "Aluno removido com sucesso!";
+            }
+        }
+
+        return "Aluno não encontrado!";
     }
 
     @Override
     public String list() {
-        return "";
+        return this.toString();
     }
 
     @Override

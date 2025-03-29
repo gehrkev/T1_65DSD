@@ -9,7 +9,7 @@ public class ProjetoPesquisa {
 
     private String nomeGrupo;
 
-    private Integer codigo = -1; // Se houver algum Projeto com codigo -1 há um erro de inser
+    private Integer codigo = -1; // Se houver algum Projeto com codigo -1 há um erro de insert
 
     private String descricao;
 

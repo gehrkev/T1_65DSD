@@ -1,6 +1,5 @@
 package br.udesc.service;
 
-import br.udesc.model.Pessoa;
 import br.udesc.model.Professor;
 
 import java.util.ArrayList;
@@ -45,14 +44,14 @@ public class ProfessorPersistenceImpl implements PessoaPersistence<Professor> {
 
     @Override
     public String get(String cpf) {
-        if (professorList.isEmpty()) return "Sem professores cadastrados";
+        if (professorList.isEmpty()) return "Sem professores cadastrados!";
 
         for (Professor p : professorList) {
             if (p.getCpf().equals(cpf)) {
                 return p.toString();
             }
         }
-        return "Professor não encontrado";
+        return "Professor não encontrado!";
     }
 
     @Override
@@ -69,16 +68,16 @@ public class ProfessorPersistenceImpl implements PessoaPersistence<Professor> {
 
     @Override
     public String delete(String cpf) {
-        if (professorList.isEmpty()) return "Sem professores cadastrados";
+        if (professorList.isEmpty()) return "Sem professores cadastrados!";
 
         for (Professor p : professorList) {
             if (p.getCpf().equals(cpf)) {
                 professorList.remove(p);
-                return "Professor removido com sucesso.";
+                return "Professor removido com sucesso!";
             }
         }
 
-        return "Professor não encontrado";
+        return "Professor não encontrado!";
     }
 
     @Override

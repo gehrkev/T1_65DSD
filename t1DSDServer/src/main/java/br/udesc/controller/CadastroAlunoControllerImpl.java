@@ -1,12 +1,9 @@
 package br.udesc.controller;
 
 import br.udesc.model.Aluno;
-import br.udesc.model.Professor;
 import br.udesc.service.PessoaPersistence;
 import br.udesc.service.PessoaPersistenceFactory;
 
-// TODO Implementar de acordo com o modelo em CadastroProfessorControllerImpl
-// TODO Só os métodos 'stub' foram inseridos, confirmar se não há mais em CadastroProfessorControllerImpl
 public class CadastroAlunoControllerImpl implements CadastroPessoaController<Aluno> {
 
     protected PessoaPersistence<Aluno> alunoPersistence;
