@@ -35,7 +35,7 @@ public class CadastroProjetoPesquisaController {
         String responsavelCpf = mensagem[4];
         Professor responsavel = professorPersistence.getObject(responsavelCpf);
 
-        if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty()) {
+        if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty() || responsavel.getCpf().equals("-1")) {
             return; // Não encontrou professor válido
         }
 

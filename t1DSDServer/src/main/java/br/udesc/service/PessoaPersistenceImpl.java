@@ -95,7 +95,11 @@ public class PessoaPersistenceImpl implements PessoaPersistence<Pessoa> {
 
         StringBuilder retorno = new StringBuilder(tamanho + "\n");
         for (Pessoa p : pessoaList) {
+            if(pessoaList.indexOf(p) == pessoaList.size() - 1) {
+                retorno.append(p.toString());
+            } else {
             retorno.append(p.toString()).append("\n");
+            }
         }
         return retorno.toString();
     }

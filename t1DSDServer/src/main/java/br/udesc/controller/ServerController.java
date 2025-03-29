@@ -49,7 +49,7 @@ public class ServerController {
             String dadosCmd = new String(buffer, 0, bytesRead);
             // PESSOA;INSERT;cpf;nome;endereco etc. OU PROJETO;INSERT;nome;descricao;etc.
             String[] msg = dadosCmd.split(";");
-            String cmd = msg[0];
+            String cmd = msg[0].toUpperCase();
             String retorno;
 
             if (cmd.equals("PROJETO")) {
@@ -69,7 +69,7 @@ public class ServerController {
     private String projetoMenu(String[] msg) {
         if (msg.length == 1) return "Erro: Campos faltantes!";
         String retorno = "";
-        String cmd = msg[1];
+        String cmd = msg[1].toUpperCase();
         String msgString = String.join(";", msg);
         switch (cmd) {
             case "INSERT": cadastroProjetoPesquisaController.insert(msgString); break; // sem retorno;

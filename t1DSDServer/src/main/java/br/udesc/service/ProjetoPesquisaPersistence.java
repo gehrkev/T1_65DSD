@@ -130,7 +130,11 @@ public class ProjetoPesquisaPersistence {
 
         StringBuilder retorno = new StringBuilder(tamanho + "\n");
         for (ProjetoPesquisa projeto : projetosList) {
-            retorno.append(projeto.toString()).append("\n");
+            if(projetosList.indexOf(projeto) == projetosList.size()-1) {
+                retorno.append(projeto.toString());
+            } else {
+                retorno.append(projeto.toString()).append("\n");
+            }
         }
         return retorno.toString();
     }

@@ -65,7 +65,7 @@ public class CommandDispatcher {
         switch (operacao) {
             case "INSERT":
                 controller.insert(comando);
-                return "Inserção realizada";
+                return"";
 
             case "UPDATE":
                 return controller.update(comando);

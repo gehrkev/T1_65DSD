@@ -97,7 +97,11 @@ public class ProfessorPersistenceImpl implements PessoaPersistence<Professor> {
 
         StringBuilder retorno = new StringBuilder(tamanho + "\n");
         for (Professor p : professorList) {
-            retorno.append(p.toString()).append("\n");
+            if (professorList.indexOf(p) == professorList.size() - 1) {
+                retorno.append(p.toString());
+            } else {
+                retorno.append(p.toString()).append("\n");
+            }
         }
         return retorno.toString();
     }
