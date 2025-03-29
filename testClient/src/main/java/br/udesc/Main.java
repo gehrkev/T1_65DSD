@@ -12,19 +12,20 @@ public class Main {
         String IP = new String();
         int PORT = 1234;
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Cliente iniciado");
         System.out.print("Digite o IP do servidor: ");
         IP = scanner.nextLine();
-        System.out.println("Cliente iniciado");
 
         while (true) {
             System.out.print("Digite um comando (ou 'exit' para sair):");
             String cmd = scanner.nextLine();
 
-            if (cmd.equals("exit")) {
+            if (cmd.equalsIgnoreCase("exit")) {
                 break;
             }
 
             try {
+                System.out.println("Conectando com IP: " + IP);
                 Socket con = new Socket(IP, PORT);
                 InputStream in = con.getInputStream();
                 OutputStream out = con.getOutputStream();
