@@ -102,10 +102,10 @@ public class ProjetoPesquisaPersistence {
                         return;
                     }
                 }
+
+                throw new IllegalArgumentException("CPF " + cpf + " não encontrado.");
             } else if (!pj.getCodigo().equals(Integer.parseInt(codigo))) {
                 throw new IllegalArgumentException("Projeto com código " + codigo + " não encontrado");
-            } else {
-                throw new IllegalArgumentException("Participante com CPF " + cpf + " não encontrado no projeto");
             }
         }
     }
@@ -117,7 +117,7 @@ public class ProjetoPesquisaPersistence {
                     if (participante.getCpf().equals(cpf) && !participante.equals(pj.getResponsavel())) {
                         pj.removeParticipante(participante); // Assim podemos remover livremente sem causar ConcurrentModificationException
                         return;
-                    } else if (participante.equals(pj.getResponsavel())) {
+                    } else if (participante.getCpf().equals(cpf) && participante.equals(pj.getResponsavel())) {
                         throw new IllegalStateException("Não é possível remover o responsável pelo projeto");
                     }
                 }
