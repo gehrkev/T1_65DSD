@@ -60,7 +60,7 @@ public class CadastroProjetoPesquisaController {
             Professor responsavel = professorPersistence.getObject(responsavelCpf);
 
             // Verifica se encontrou um professor válido
-            if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty()) {
+            if (responsavel == null || responsavel.getCpf() == null || responsavel.getCpf().isEmpty() || responsavel.getCpf().equals("-1")) {
                 return "Professor responsável não encontrado";
             }
 
@@ -122,6 +122,12 @@ public class CadastroProjetoPesquisaController {
             return "Participante adicionado com sucesso";
         } catch (NumberFormatException e) {
             return "Código do projeto inválido";
+        } catch (IllegalStateException e) {
+            return e.getMessage();
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        } catch (Exception e) {
+            return "Erro inesperado: " + e.getMessage();
         }
     }
 
@@ -139,6 +145,12 @@ public class CadastroProjetoPesquisaController {
             return "Participante removido com sucesso";
         } catch (NumberFormatException e) {
             return "Código do projeto inválido";
+        } catch (IllegalStateException e) {
+            return e.getMessage(); // Para o caso de tentar remover o responsável
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // Para projeto ou participante não encontrado
+        } catch (Exception e) {
+            return "Erro inesperado: " + e.getMessage();
         }
     }
 }

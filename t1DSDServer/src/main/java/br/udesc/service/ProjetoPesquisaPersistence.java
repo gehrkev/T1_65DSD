@@ -73,7 +73,7 @@ public class ProjetoPesquisaPersistence {
         return contadorCodigo;
     }
 
-    public void addParticipante(String codigo, String cpf) {
+    public void addParticipante(String codigo, String cpf) throws IllegalArgumentException, IllegalStateException {
         for (ProjetoPesquisa pj : projetosList) {
             if (pj.getCodigo().equals(Integer.parseInt(codigo))) {
                 PessoaPersistence<Professor> professorPersistence =
@@ -102,21 +102,29 @@ public class ProjetoPesquisaPersistence {
                         return;
                     }
                 }
+            } else if (!pj.getCodigo().equals(Integer.parseInt(codigo))) {
+                throw new IllegalArgumentException("Projeto com código " + codigo + " não encontrado");
+            } else {
+                throw new IllegalArgumentException("Participante com CPF " + cpf + " não encontrado no projeto");
             }
         }
     }
 
-    public void removeParticipante(String codigo, String cpf) {
+    public void removeParticipante(String codigo, String cpf) throws IllegalArgumentException, IllegalStateException {
         for (ProjetoPesquisa pj : projetosList) {
             if (pj.getCodigo().equals(Integer.parseInt(codigo))) {
                 for (Pessoa participante : new ArrayList<>(pj.getParticipantes())) { // Criamos uma cópia de participantes ao invés de percorrer a própria
                     if (participante.getCpf().equals(cpf) && !participante.equals(pj.getResponsavel())) {
                         pj.removeParticipante(participante); // Assim podemos remover livremente sem causar ConcurrentModificationException
                         return;
+                    } else if (participante.equals(pj.getResponsavel())) {
+                        throw new IllegalStateException("Não é possível remover o responsável pelo projeto");
                     }
                 }
+                throw new IllegalArgumentException("Participante com CPF " + cpf + " não encontrado no projeto");
             }
         }
+        throw new IllegalArgumentException("Projeto com código " + codigo + " não encontrado");
     }
 
     public String list() {
@@ -130,7 +138,7 @@ public class ProjetoPesquisaPersistence {
 
         StringBuilder retorno = new StringBuilder(tamanho + "\n");
         for (ProjetoPesquisa projeto : projetosList) {
-            if(projetosList.indexOf(projeto) == projetosList.size()-1) {
+            if (projetosList.indexOf(projeto) == projetosList.size() - 1) {
                 retorno.append(projeto.toString());
             } else {
                 retorno.append(projeto.toString()).append("\n");

@@ -45,6 +45,9 @@
             if (!ipServidor) {
                 document.getElementById("modal").style.display = "flex";
             }
+
+            document.getElementById("tipo").addEventListener("change", atualizarOperacoes);
+
             atualizarOperacoes();
         });
 
@@ -115,23 +118,73 @@
                 });
         }
 
+        function atualizarPlaceholder() {
+            let tipo = document.getElementById("tipo").value;
+            let operacao = document.getElementById("operacao").value;
+            let dadosInput = document.getElementById("dados");
+
+            const placeholders = {
+                "PESSOA": {
+                    "INSERT": "CPF;Nome;Endereço",
+                    "UPDATE": "CPF;Nome;Endereço",
+                    "GET": "CPF",
+                    "DELETE": "CPF",
+                    "LIST": "Deixe vazio para listar todos"
+                },
+                "ALUNO": {
+                    "INSERT": "CPF;Nome;Endereço;Matrícula",
+                    "UPDATE": "CPF;Nome;Endereço;Matrícula",
+                    "GET": "CPF",
+                    "DELETE": "CPF",
+                    "LIST": "Deixe vazio para listar todos"
+                },
+                "PROFESSOR": {
+                    "INSERT": "CPF;Nome;Endereço;Departamento",
+                    "UPDATE": "CPF;Nome;Endereço;Departamento",
+                    "GET": "CPF",
+                    "DELETE": "CPF",
+                    "LIST": "Deixe vazio para listar todos"
+                },
+                "PROJETO": {
+                    "INSERT": "Nome do projeto;Descrição;CPF do Responsável",
+                    "UPDATE": "ID do Projeto;Nome do projeto;Descrição;CPF do Responsável",
+                    "GET": "ID do Projeto",
+                    "DELETE": "ID do Projeto",
+                    "LIST": "Deixe vazio para listar todos",
+                    "ADD": "ID do Projeto;CPF do Participante",
+                    "REMOVE": "ID do Projeto;CPF do Participante"
+                }
+            };
+
+            if (placeholders[tipo] && placeholders[tipo][operacao]) {
+                dadosInput.placeholder = placeholders[tipo][operacao];
+            } else {
+                dadosInput.placeholder = "Digite os dados aqui...";
+            }
+        }
+
         function atualizarOperacoes() {
             let tipo = document.getElementById("tipo").value;
             let operacaoSelect = document.getElementById("operacao");
             operacaoSelect.innerHTML = `
-                <option value="INSERT">Inserir</option>
-                <option value="UPDATE">Atualizar</option>
-                <option value="GET">Buscar</option>
-                <option value="DELETE">Apagar</option>
-                <option value="LIST">Listar</option>
-            `;
+        <option value="INSERT">Inserir</option>
+        <option value="UPDATE">Atualizar</option>
+        <option value="GET">Buscar</option>
+        <option value="DELETE">Apagar</option>
+        <option value="LIST">Listar</option>
+    `;
             if (tipo === "PROJETO") {
                 operacaoSelect.innerHTML += `
-                    <option value="ADD">Adicionar Participante</option>
-                    <option value="REMOVE">Remover Participante</option>
-                `;
+            <option value="ADD">Adicionar Participante</option>
+            <option value="REMOVE">Remover Participante</option>
+        `;
             }
+
+            operacaoSelect.addEventListener("change", atualizarPlaceholder);
+
+            atualizarPlaceholder();
         }
+
     </script>
 </body>
 
