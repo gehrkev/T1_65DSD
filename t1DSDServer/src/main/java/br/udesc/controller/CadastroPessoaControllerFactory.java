@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class CadastroPessoaControllerFactory {
 
-    private static final Map<Class<?>, CadastroPessoaController<?>> instances = new HashMap<>();
+    private static final Map<Class<?>, CadastroPessoaController<?>> INSTANCES = new HashMap<>();
 
     /**
      * Retorna a instância de controller para o tipo especificado.
@@ -21,7 +21,7 @@ public class CadastroPessoaControllerFactory {
      */
     @SuppressWarnings("unchecked")
     public static <T extends Pessoa> CadastroPessoaController<T> getController(Class<T> clazz) {
-        if (!instances.containsKey(clazz)) {
+        if (!INSTANCES.containsKey(clazz)) {
             CadastroPessoaController<T> controller;
 
             if (clazz.equals(Pessoa.class)) {
@@ -34,10 +34,10 @@ public class CadastroPessoaControllerFactory {
                 throw new IllegalArgumentException("Tipo de Pessoa não suportado: " + clazz.getName());
             }
 
-            instances.put(clazz, controller);
+            INSTANCES.put(clazz, controller);
         }
 
-        return (CadastroPessoaController<T>) instances.get(clazz);
+        return (CadastroPessoaController<T>) INSTANCES.get(clazz);
     }
 
     private CadastroPessoaControllerFactory() {}

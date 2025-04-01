@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class PessoaPersistenceFactory {
 
-    private static final Map<Class<?>, PessoaPersistence<?>> instances = new HashMap<>();
+    private static final Map<Class<?>, PessoaPersistence<?>> INSTANCES = new HashMap<>();
 
     /**
      * Retorna a instância de persistência para o tipo especificado.
@@ -18,7 +18,7 @@ public class PessoaPersistenceFactory {
      */
     @SuppressWarnings("unchecked")
     public static <T extends Pessoa> PessoaPersistence<T> getPersistence(Class<T> clazz) {
-        if (!instances.containsKey(clazz)) {
+        if (!INSTANCES.containsKey(clazz)) {
             PessoaPersistence<T> persistence;
 
             if (clazz.equals(Pessoa.class)) {
@@ -31,10 +31,10 @@ public class PessoaPersistenceFactory {
                 throw new IllegalArgumentException("Tipo de Pessoa não suportado: " + clazz.getName());
             }
 
-            instances.put(clazz, persistence);
+            INSTANCES.put(clazz, persistence);
         }
 
-        return (PessoaPersistence<T>) instances.get(clazz);
+        return (PessoaPersistence<T>) INSTANCES.get(clazz);
     }
 
     private PessoaPersistenceFactory() {}

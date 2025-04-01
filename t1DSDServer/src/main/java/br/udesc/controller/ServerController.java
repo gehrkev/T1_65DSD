@@ -11,12 +11,12 @@ public class ServerController {
 
     private static ServerController instance;
 
-    private final CommandDispatcher commandDispatcher;
-    private final CadastroProjetoPesquisaController cadastroProjetoPesquisaController;
+    private final CommandDispatcher COMMAND_DISPATCHER;
+    private final CadastroProjetoPesquisaController CADASTRO_PROJETO_PESQUISA_CONTROLLER;
 
     private ServerController() {
-        this.commandDispatcher = CommandDispatcher.getInstance();
-        this.cadastroProjetoPesquisaController = CadastroProjetoPesquisaController.getInstance();
+        this.COMMAND_DISPATCHER = CommandDispatcher.getInstance();
+        this.CADASTRO_PROJETO_PESQUISA_CONTROLLER = CadastroProjetoPesquisaController.getInstance();
         openServer();
     }
 
@@ -56,7 +56,7 @@ public class ServerController {
                 retorno = projetoMenu(msg);
             } else {
                 // Todos os comandos relacionados às pessoas (PESSOA, PROFESSOR, ALUNO) são tratados pelo CommandDispatcher
-                retorno = commandDispatcher.processarComando(dadosCmd);
+                retorno = COMMAND_DISPATCHER.processarComando(dadosCmd);
             }
 
             out.write(retorno.getBytes());
@@ -72,13 +72,13 @@ public class ServerController {
         String cmd = msg[1].toUpperCase();
         String msgString = String.join(";", msg);
         switch (cmd) {
-            case "INSERT": cadastroProjetoPesquisaController.insert(msgString); break; // sem retorno;
-            case "UPDATE": retorno = cadastroProjetoPesquisaController.update(msgString); break;
-            case "GET": retorno = cadastroProjetoPesquisaController.get(msgString); break;
-            case "DELETE": retorno = cadastroProjetoPesquisaController.delete(msgString); break;
-            case "LIST": retorno = cadastroProjetoPesquisaController.list(); break;
-            case "ADD": retorno = cadastroProjetoPesquisaController.addParticipante(msgString); break;
-            case "REMOVE": retorno = cadastroProjetoPesquisaController.removeParticipante(msgString); break;
+            case "INSERT": CADASTRO_PROJETO_PESQUISA_CONTROLLER.insert(msgString); break; // sem retorno;
+            case "UPDATE": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.update(msgString); break;
+            case "GET": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.get(msgString); break;
+            case "DELETE": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.delete(msgString); break;
+            case "LIST": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.list(); break;
+            case "ADD": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.addParticipante(msgString); break;
+            case "REMOVE": retorno = CADASTRO_PROJETO_PESQUISA_CONTROLLER.removeParticipante(msgString); break;
             default: retorno = "Comando inválido!"; break;
         }
         return retorno;
